@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Operation | Sentinel 2036</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body class="bg-slate-950">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main class="max-w-3xl mx-auto px-4 py-12">
+        <div class="mb-10 text-center">
+            <h2 class="text-3xl font-black text-white">INITIALIZE SCAN</h2>
+            <p class="text-xs text-slate-500 font-bold uppercase tracking-widest mt-2">Neural Synthesis Parameters</p>
+        </div>
+
+        <form id="scanForm" class="space-y-6">
+            <div class="glass-card p-8">
+                <div class="grid grid-cols-2 gap-4 mb-8">
+                    <button type="button" onclick="setScanType('JAVA_CODE')" class="scan-btn border border-indigo-500 bg-indigo-500/10 text-indigo-400 rounded-2xl py-4 text-[10px] font-black uppercase tracking-widest">Java Code</button>
+                    <button type="button" onclick="setScanType('OPENAPI')" class="scan-btn border border-slate-800 text-slate-500 rounded-2xl py-4 text-[10px] font-black uppercase tracking-widest">OpenAPI Spec</button>
+                    <button type="button" onclick="setScanType('SMART_CONTRACT')" class="scan-btn border border-slate-800 text-slate-500 rounded-2xl py-4 text-[10px] font-black uppercase tracking-widest">Smart Contract</button>
+                    <button type="button" onclick="setScanType('BUG_ANALYSIS')" class="scan-btn border border-slate-800 text-slate-500 rounded-2xl py-4 text-[10px] font-black uppercase tracking-widest">Bug Audit</button>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2 block">Operation Name</label>
+                        <input type="text" id="targetName" placeholder="e.g. Payroll Gateway Audit" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-5 py-4 text-sm text-white focus:border-indigo-500 outline-none transition-all">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2 block">Source Payload</label>
+                        <textarea id="content" rows="12" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-5 py-4 text-sm text-indigo-300 mono outline-none focus:border-indigo-500 transition-all resize-none" placeholder="Paste target source or JSON schema here..."></textarea>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-8 border-t border-slate-800">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
+                                <i class="fas fa-hammer text-purple-500"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold">FORGE MODE</h4>
+                                <p class="text-[10px] text-slate-500 font-bold uppercase">Synthesize QA Test Cases</p>
+                            </div>
+                        </div>
+                        <input type="checkbox" id="forgeMode" class="w-6 h-6 rounded-lg bg-slate-950 border-slate-800 checked:bg-indigo-600 transition-all">
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="w-full py-5 bg-indigo-600 rounded-2xl font-black tracking-[0.2em] text-white hover:bg-indigo-500 shadow-xl shadow-indigo-500/20 transition-all">
+                        START ANALYSIS ENGINE
+                    </button>
+                </div>
+            </div>
+        </form>
+    </main>
+
+    <div id="loadingOverlay" class="fixed inset-0 bg-slate-950/90 z-50 flex flex-col items-center justify-center hidden">
+        <div class="relative mb-8">
+            <div class="w-20 h-20 border-4 border-indigo-500/10 rounded-full"></div>
+            <div class="absolute inset-0 border-4 border-indigo-500 rounded-full border-t-transparent animate-spin"></div>
+        </div>
+        <h3 class="text-lg font-black tracking-widest uppercase">Sequencing Neural Link</h3>
+        <p class="text-[10px] text-indigo-400 font-mono animate-pulse mt-2">Bypassing heuristic blockers...</p>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        let selectedType = 'JAVA_CODE';
+        function setScanType(type) {
+            selectedType = type;
+            document.querySelectorAll('.scan-btn').forEach(btn => {
+                btn.classList.remove('border-indigo-500', 'bg-indigo-500/10', 'text-indigo-400');
+                btn.classList.add('border-slate-800', 'text-slate-500');
+                if(btn.innerText.toUpperCase().includes(type.replace('_', ' '))) {
+                    btn.classList.add('border-indigo-500', 'bg-indigo-500/10', 'text-indigo-400');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

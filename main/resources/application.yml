@@ -1,0 +1,63 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: sentinel-2036
+  
+  # H2 Database Configuration (In-Memory for MVP)
+  datasource:
+    url: jdbc:h2:mem:sentineldb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  
+  # H2 Console - Accessible via /h2-console
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        trace: false
+        web-allow-others: false
+
+  # JPA and Hibernate Settings
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  # Safety Settings: Restricting Request Sizes to prevent DoS via large payloads
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.sentinel: DEBUG
+    org.springframework.web: INFO
+    org.hibernate.SQL: ERROR
+
+# Custom Configuration for Input Validation Logic
+sentinel:
+  security:
+    input:
+      # Max characters for code/spec scanning to prevent excessive AI costs/timeouts
+      max-chars: 50000
+      # List of expected extensions (for guidance in backend logic)
+      allowed-extensions:
+        - .java
+        - .sol
+        - .yaml
+        - .yml
+        - .json
+        - .txt
